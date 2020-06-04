@@ -14,41 +14,31 @@ knitr::opts_chunk$set(
 ```
 
 # clust431
-
-<!-- badges: start -->
-<!-- badges: end -->
-
-The goal of clust431 is to ...
-
-## Installation
-
-You can install the released version of clust431 from [CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("clust431")
-```
-
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
+```{r}
 library(clust431)
-## basic example code
+library(ggplot2)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+```{r}
+dat <- iris[,1:4]
 
-```{r cars}
-summary(cars)
+iris_clust <- em_clust(dat, 3)
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
+```{r}
 
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
+table(iris_clust$group, iris$Species)
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
+```{r}
+plotone <- ggplot(data = iris, aes(Sepal.Length, Sepal.Width, colour = Species)) + 
+    geom_point(shape = my_clust$group) + 
+    geom_point(data = iris_clust$mu, aes(iris_clust$mu[,1], iris_clust$mu[,2]), color = "blue", size = 3)
+
+plottwo <- ggplot(data = iris, aes(Petal.Length, Petal.Width, colour = Species)) + 
+    geom_point(shape = my_clust$group) + 
+    geom_point(data = iris_clust$mu, aes(iris_clust$mu[,3], iris_clust$mu[,4]), color = "blue", size = 3)
+    
+plotone
+plottwo
+```
