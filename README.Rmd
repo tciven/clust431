@@ -13,11 +13,58 @@ knitr::opts_chunk$set(
 )
 ```
 
-# clust431
-```{r}
+# KNN, Hierarchical, and EM Clustering Implementations in R
+
+This package was completed as part of STAT 431 Advanced Programming in R at Cal Poly
+
+```{r example}
 library(clust431)
+library(dplyr)
 library(ggplot2)
 ```
+
+### K Nearest Neighbors
+First the classic of example of predicting iris species using the petal and sepal lengths. We also compute the proportion of variation explained by the grouping. Each one of my implementations is compared to the base R equivalent.
+```{r}
+kmodel <- kmeans(iris[,1:4], 3)
+kmodel$betweenss / kmodel$totss
+table(iris$Species, kmodel$cluster)
+
+mymodel <- k_means(iris[,1:4], 3)
+mymodel$ssbetween / mymodel$sstotal
+table(iris$Species, mymodel$assign)
+
+```
+
+
+Now to predict the number of cylinders in a car using othe rmetrics (mtcars). This time we will use the first two principle components instead of the original variables.
+
+```{r}
+mttrain <- mtcars %>%
+  select(mpg, disp, hp, drat, wt, qsec)
+
+mtcarspc <- data.frame((princomp(mttrain)$scores[,1:2]))
+
+kmodel <- kmeans(mtcarspc, 3)
+kmodel$betweenss / kmodel$totss
+table(mtcars$cyl, kmodel$cluster)
+
+mymodel <- k_means(mttrain, 3, T)
+mymodel$ssbetween / mymodel$sstotal
+table(mtcars$cyl, mymodel$assign)
+```
+
+
+### Hierarchical Clustering
+
+```{r}
+mydata <- iris[,1:4]
+groupstrs <- hier_clust(mydata, 3)
+print(groupstrs)
+```
+
+
+### EM Algorithm
 
 ```{r}
 dat <- iris[,1:4]
@@ -32,13 +79,14 @@ table(iris_clust$group, iris$Species)
 
 ```{r}
 plotone <- ggplot(data = iris, aes(Sepal.Length, Sepal.Width, colour = Species)) + 
-    geom_point(shape = my_clust$group) + 
+    geom_point(shape = iris_clust$group) + 
     geom_point(data = iris_clust$mu, aes(iris_clust$mu[,1], iris_clust$mu[,2]), color = "blue", size = 3)
 
 plottwo <- ggplot(data = iris, aes(Petal.Length, Petal.Width, colour = Species)) + 
-    geom_point(shape = my_clust$group) + 
+    geom_point(shape = iris_clust$group) + 
     geom_point(data = iris_clust$mu, aes(iris_clust$mu[,3], iris_clust$mu[,4]), color = "blue", size = 3)
     
 plotone
 plottwo
 ```
+

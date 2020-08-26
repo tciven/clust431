@@ -2,6 +2,8 @@
 
 export("%>%")
 export(em_clust)
+export(hier_clust)
+export(k_means)
 import(FNN)
 import(dplyr)
 import(mvtnorm)
