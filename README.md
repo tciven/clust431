@@ -34,18 +34,18 @@ kmodel$betweenss / kmodel$totss
 table(iris$Species, kmodel$cluster)
 #>             
 #>               1  2  3
-#>   setosa      0 50  0
-#>   versicolor 48  0  2
-#>   virginica  14  0 36
+#>   setosa      0  0 50
+#>   versicolor 48  2  0
+#>   virginica  14 36  0
 
 mymodel <- k_means(iris[,1:4], 3)
 mymodel$ssbetween / mymodel$sstotal
-#> [1] 0.7895522
+#> [1] 0.7851997
 table(iris$Species, mymodel$assign)
 #>             
 #>               1  2  3
-#>   setosa     21 29  0
-#>   versicolor  3  0 47
+#>   setosa     18 32  0
+#>   versicolor  4  0 46
 #>   virginica   0  0 50
 ```
 
@@ -65,19 +65,19 @@ kmodel$betweenss / kmodel$totss
 table(mtcars$cyl, kmodel$cluster)
 #>    
 #>      1  2  3
-#>   4  0  0 11
-#>   6  2  0  5
-#>   8  5  9  0
+#>   4 11  0  0
+#>   6  5  0  2
+#>   8  0  9  5
 
 mymodel <- k_means(mttrain, 3, T)
 mymodel$ssbetween / mymodel$sstotal
-#> [1] 0.8087915
+#> [1] 0.8343965
 table(mtcars$cyl, mymodel$assign)
 #>    
 #>      1  2  3
-#>   4  0  0 11
-#>   6  7  0  0
-#>   8  0 14  0
+#>   4 11  0  0
+#>   6  6  0  1
+#>   8  0  4 10
 ```
 
 ### Hierarchical Clustering
@@ -104,9 +104,9 @@ iris_clust <- em_clust(dat, 3)
 table(iris_clust$group, iris$Species)
 #>    
 #>     setosa versicolor virginica
-#>   1      0         50        50
-#>   2     14          0         0
-#>   3     36          0         0
+#>   1     50          0         0
+#>   2      0          3        46
+#>   3      0         47         4
 ```
 
 ``` r
